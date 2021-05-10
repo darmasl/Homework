@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Categories" parent="AppTheme"/>
+
+    <style name="Categories.Card" parent="Widget.MaterialComponents.CardView">
+        <item name="rippleColor">@color/colorAccent</item>
+        <item name="android:layout_margin">@dimen/category_card_shadow_margin</item>
+        <item name="cardBackgroundColor">@android:color/white</item>
+    </style>
+
+    <style name="Categories.Title" parent="AppTheme.Text">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingBottom">@dimen/category_title_vertical_spacing</item>
+        <item name="android:paddingTop">@dimen/category_title_vertical_spacing</item>
+        <item name="android:background">@drawable/bg_grid_card_title</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="CategoryDetails" parent="AppTheme"/>
+
+    <style name="CategoryDetails.Overview" parent="AppTheme.Text">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">start|top</item>
+        <item name="android:padding">@dimen/category_details_overview_padding</item>
+        <item name="android:background">@android:color/darker_gray</item>
+    </style>
+
+</resources>

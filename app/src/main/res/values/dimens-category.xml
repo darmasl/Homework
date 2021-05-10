@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="category_card_shadow_margin">2dp</dimen>
+    <dimen name="category_card_elevation">2dp</dimen>
+    <dimen name="category_card_radius">4dp</dimen>
+
+    <dimen name="category_title_vertical_spacing">12dp</dimen>
+
+    <dimen name="category_spacing">8dp</dimen>
+
+    <dimen name="category_details_overview_padding">8dp</dimen>
+
+</resources>
