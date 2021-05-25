@@ -7,12 +7,14 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
+import homework.dagger.App
 import homework.dagger.R
 import homework.dagger.common.ui.BaseFragment
 import homework.dagger.databinding.CategoryDetailsFragmentBinding
 import homework.dagger.feature.common.ui.GridSpaceDecoration
 import homework.dagger.feature.meal.mealOverviewCardDelegate
 import homework.dagger.feature.meal.model.MealVO
+import javax.inject.Inject
 
 class CategoryDetailsFragment :
     BaseFragment<CategoryDetailsContract.View>(R.layout.category_details_fragment),
@@ -21,9 +23,11 @@ class CategoryDetailsFragment :
         private val TAG = CategoryDetailsFragment::class.java.canonicalName
     }
 
+    @Inject
+    override lateinit var presenter: CategoryDetailsContract.Presenter
+
     private lateinit var binding: CategoryDetailsFragmentBinding
 
-    override val presenter: CategoryDetailsContract.Presenter = CategoryDetailsPresenter()
     private val mealsAdapter = ListDelegationAdapter(
         mealOverviewCardDelegate(::onOpenMeal)
     )
@@ -31,12 +35,12 @@ class CategoryDetailsFragment :
     private val args: CategoryDetailsFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        App.app.appComponent.inject(this)
         binding = CategoryDetailsFragmentBinding.bind(view)
         super.onViewCreated(view, savedInstanceState)
         presenter.setCategory(args.category)
         setupRecyclerView()
         setupSwipeToRefresh()
-
     }
 
     override fun showProgress() = with(binding) {
