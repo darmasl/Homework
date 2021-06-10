@@ -1,5 +1,6 @@
 package homework.dagger.feature.category.categorydetails
 
+import android.content.Context
 import homework.dagger.App
 import homework.dagger.common.contract.BasePresenter
 import homework.dagger.common.interactor.Interactor
@@ -14,24 +15,22 @@ import homework.dagger.repository.AppDatabase
 import homework.dagger.repository.meal.MealsRepository
 import homework.dagger.repository.meal.MealsRepositoryImpl
 import homework.dagger.repository.meal.db.LocalMealDataSourceImpl
+import homework.dagger.repository.meal.db.LocalMealsDataSource
 import homework.dagger.repository.meal.network.MealsService
+import homework.dagger.repository.meal.network.NetworkMealsDataSource
 import homework.dagger.repository.meal.network.NetworkMealsDataSourceImpl
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import javax.inject.Inject
 
-class CategoryDetailsPresenter : BasePresenter<CategoryDetailsContract.View>(),
+class CategoryDetailsPresenter @Inject constructor(
+    private val preferencesUtils: PreferencesUtils,
+    private val networkMeal: NetworkMealsDataSource,
+    private val localMeal: LocalMealsDataSource,
+    private val mealsRepository: MealsRepository,
+) : BasePresenter<CategoryDetailsContract.View>(),
     CategoryDetailsContract.Presenter {
     private var category: Category? = null
-
-    private val mealsRepository: MealsRepository = MealsRepositoryImpl(
-        networkSource = NetworkMealsDataSourceImpl(
-            RetrofitClient.retrofit.create(MealsService::class.java)
-        ),
-        localSource = LocalMealDataSourceImpl(
-            AppDatabase.getInstance(App.appContext).mealsDao()
-        ),
-        preferencesUtils = PreferencesUtils(App.appContext)
-    )
 
     private val getMealsForCategoryInteractor: Interactor<MealsForCategoryParams, List<Meal>, Disposable> =
         GetMealsForCategoryInteractor(mealsRepository)

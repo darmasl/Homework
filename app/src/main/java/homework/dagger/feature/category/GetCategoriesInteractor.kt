@@ -4,7 +4,9 @@ import homework.dagger.common.interactor.SingleRxInteractor
 import homework.dagger.common.model.Category
 import homework.dagger.repository.category.CategoriesRepository
 import io.reactivex.Single
+import javax.inject.Inject
 
+//class GetCategoriesInteractor @Inject constructor(
 class GetCategoriesInteractor(
     private val categoriesRepository: CategoriesRepository
 ) : SingleRxInteractor<Unit, List<Category>>() {

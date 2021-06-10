@@ -5,25 +5,29 @@ import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hannesdorfmann.adapterdelegates4.ListDelegationAdapter
+import homework.dagger.App
 import homework.dagger.R
 import homework.dagger.common.ui.BaseFragment
 import homework.dagger.databinding.CategoriesFragmentBinding
 import homework.dagger.feature.category.model.CategoryVO
 import homework.dagger.feature.common.ui.GridSpaceDecoration
+import javax.inject.Inject
 
-class CategoriesFragment : BaseFragment<CategoryContract.View>(R.layout.categories_fragment),
+class CategoriesFragment :
+    BaseFragment<CategoryContract.View>(R.layout.categories_fragment),
     CategoryContract.View {
     companion object {
         private val TAG = CategoriesFragment::class.java.canonicalName
     }
+
+    @Inject
+    override lateinit var presenter: CategoryContract.Presenter
 
     private lateinit var binding: CategoriesFragmentBinding
 
     private val categoryAdapter: ListDelegationAdapter<List<CategoryVO>> = ListDelegationAdapter(
         categoryCardDelegate(::openCategory)
     )
-
-    override val presenter: CategoryContract.Presenter = CategoryPresenter()
 
     override fun showProgress() {
         Log.d(TAG, "show progress")
@@ -47,6 +51,7 @@ class CategoriesFragment : BaseFragment<CategoryContract.View>(R.layout.categori
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        App.app.appComponent.inject(this)
         binding = CategoriesFragmentBinding.bind(view)
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()

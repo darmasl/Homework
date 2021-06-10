@@ -1,38 +1,32 @@
 package homework.dagger.feature.category
 
-import homework.dagger.App
+import android.content.Context
 import homework.dagger.R
 import homework.dagger.common.context.ActivityProvider
 import homework.dagger.common.contract.BasePresenter
 import homework.dagger.common.interactor.Interactor
 import homework.dagger.common.model.Category
-import homework.dagger.common.network.RetrofitClient
 import homework.dagger.common.router.IRouter
 import homework.dagger.common.utils.PreferencesUtils
 import homework.dagger.feature.category.model.CategoryVO
 import homework.dagger.feature.main.MainRouter
-import homework.dagger.repository.AppDatabase
 import homework.dagger.repository.category.CategoriesRepository
-import homework.dagger.repository.category.CategoriesRepositoryImpl
-import homework.dagger.repository.category.db.LocalCategoriesDataSourceImpl
-import homework.dagger.repository.category.network.CategoryService
-import homework.dagger.repository.category.network.NetworkCategoriesDataSourceImpl
+import homework.dagger.repository.category.db.LocalCategoriesDataSource
+import homework.dagger.repository.category.network.NetworkCategoriesDataSource
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import javax.inject.Inject
 
-class CategoryPresenter : BasePresenter<CategoryContract.View>(), CategoryContract.Presenter {
+class CategoryPresenter @Inject constructor(
+    val appContext: Context,
+    private val preferencesUtils: PreferencesUtils,
+    private val networkCategory: NetworkCategoriesDataSource,
+    private val localCategory: LocalCategoriesDataSource,
+    private val categoriesRepository: CategoriesRepository,
+  //  private val getCategoriesInteractor: Interactor<Unit, List<Category>, Disposable>
+) : BasePresenter<CategoryContract.View>(), CategoryContract.Presenter {
     private val router: IRouter = MainRouter(ActivityProvider.get())
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
-
-    private val categoriesRepository: CategoriesRepository = CategoriesRepositoryImpl(
-        networkSource = NetworkCategoriesDataSourceImpl(
-            RetrofitClient.retrofit.create(CategoryService::class.java)
-        ),
-        localSource = LocalCategoriesDataSourceImpl(
-            AppDatabase.getInstance(App.appContext).categoriesDao()
-        ),
-        preferencesUtils = PreferencesUtils(App.appContext)
-    )
 
     private val getCategoriesInteractor: Interactor<Unit, List<Category>, Disposable> =
         GetCategoriesInteractor(categoriesRepository)

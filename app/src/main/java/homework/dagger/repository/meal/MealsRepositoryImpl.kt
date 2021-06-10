@@ -9,8 +9,9 @@ import homework.dagger.repository.meal.network.NetworkMealsDataSource
 import io.reactivex.Single
 import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class MealsRepositoryImpl(
+class MealsRepositoryImpl @Inject constructor(
     private val localSource: LocalMealsDataSource,
     private val networkSource: NetworkMealsDataSource,
     private val preferencesUtils: PreferencesUtils

@@ -8,8 +8,9 @@ import homework.dagger.repository.category.network.NetworkCategoriesDataSource
 import io.reactivex.Single
 import java.util.*
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class CategoriesRepositoryImpl(
+class CategoriesRepositoryImpl @Inject constructor(
     private val networkSource: NetworkCategoriesDataSource,
     private val localSource: LocalCategoriesDataSource,
     private val preferencesUtils: PreferencesUtils
